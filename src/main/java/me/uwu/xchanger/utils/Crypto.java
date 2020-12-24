@@ -98,7 +98,7 @@ public class Crypto {
         return new String(bytes, UTF8_CHARSET);
     }
 
-    byte[] encodeUTF8(String string) {
+    public static byte[] encodeUTF8(String string) {
         return string.getBytes(UTF8_CHARSET);
     }
 
