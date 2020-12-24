@@ -1,8 +1,18 @@
+/*
+*
+* © UwUDev 2020-2021
+*
+* i made it with love for you guys.
+* its free tu use <3
+*
+*/
+
 package me.uwu.xchanger.utils;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Crypto {
 
@@ -99,5 +109,19 @@ public class Crypto {
 
     byte[] encodeUTF8(String string) {
         return string.getBytes(UTF8_CHARSET);
+    }
+
+    public static String genkey(){
+        byte[] array = new byte[32];
+        new Random().nextBytes(array);
+
+        return new String(array, StandardCharsets.UTF_8);
+    }
+
+    public static String genkeyWithLengt(int length){
+        byte[] array = new byte[length];
+        new Random().nextBytes(array);
+
+        return new String(array, StandardCharsets.UTF_8);
     }
 }
