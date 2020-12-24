@@ -80,9 +80,9 @@ public class Crypto {
         return key;
     }
 
-    private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+    private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
-    public String decodeUTF8(byte[] bytes) {
+    public static String decodeUTF8(byte[] bytes) {
         return new String(bytes, UTF8_CHARSET);
     }
 
