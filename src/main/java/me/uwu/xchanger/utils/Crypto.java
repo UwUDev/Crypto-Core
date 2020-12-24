@@ -112,10 +112,7 @@ public class Crypto {
     }
 
     public static String genkey(){
-        byte[] array = new byte[32];
-        new Random().nextBytes(array);
-
-        return new String(array, StandardCharsets.UTF_8);
+        return genkeyWithLengt(32);
     }
 
     public static String genkeyWithLengt(int length){
