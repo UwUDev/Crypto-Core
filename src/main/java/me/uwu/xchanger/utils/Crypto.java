@@ -1,0 +1,92 @@
+package me.uwu.xchanger.utils;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
+public class Crypto {
+
+    private String key;
+
+    public Crypto(String key) {
+        this.key = key;
+    }
+
+    public byte[] decrypt(byte[] message){
+
+        byte[] keyBytes = this.key.getBytes(StandardCharsets.US_ASCII);
+
+        ArrayList<Byte> byteArray = new ArrayList<>();
+
+        int state = 0;
+        for (byte b : message) {
+            if(state >= keyBytes.length)
+                state = 0;
+            System.out.println(b);
+            byte oof = (byte) (b - keyBytes[state]);
+            byteArray.add(oof);
+            state++;
+        }
+
+        System.out.println("\n\n");
+
+        for (byte b : byteArray){
+            System.out.println(b);
+        }
+
+        byte[] result = new byte[byteArray.size()];
+        for(int i = 0; i < byteArray.size(); i++) {
+            result[i] = byteArray.get(i);
+        }
+
+        return result;
+    }
+
+    public byte[] crypt(String message){
+        byte[] keyBytes = this.key.getBytes(StandardCharsets.US_ASCII);
+        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
+
+        ArrayList<Byte> byteArray = new ArrayList<>();
+
+        int state = 0;
+        for (byte b : bytes) {
+            if(state >= keyBytes.length)
+                state = 0;
+            System.out.println(b);
+            byte oof = (byte) (b + keyBytes[state]);
+            byteArray.add(oof);
+            state++;
+        }
+
+        System.out.println("\n\n");
+
+        for (byte b : byteArray){
+            System.out.println(b);
+        }
+
+        byte[] result = new byte[byteArray.size()];
+        for(int i = 0; i < byteArray.size(); i++) {
+            result[i] = byteArray.get(i);
+        }
+
+        return result;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+
+    public String decodeUTF8(byte[] bytes) {
+        return new String(bytes, UTF8_CHARSET);
+    }
+
+    byte[] encodeUTF8(String string) {
+        return string.getBytes(UTF8_CHARSET);
+    }
+}
