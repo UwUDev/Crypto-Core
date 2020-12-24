@@ -5,7 +5,7 @@ import me.uwu.xchanger.utils.Crypto;
 public class Main {
     public static void main(String[] args) {
         //String key = Crypto.genkey();
-        String key = Crypto.genkeyWithLengt(50);
+        String key = Crypto.genkeyWithLength(50);
         System.out.println("Key: " + key);
 
         /*Crypto crypto = new Crypto("ﮄﮫﭽꜺḖᴙ۞ՖҢӪїῦ̤ȾǱ×ݭࢭἳὬἄ﷽ﭿﻦԫ֏Ҏз");

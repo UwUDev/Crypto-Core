@@ -44,6 +44,10 @@ public class Crypto {
             state++;
         }
 
+        return getBytes(byteArray);
+    }
+
+    private byte[] getBytes(ArrayList<Byte> byteArray) {
         if(this.print) {
             System.out.println("\n\n");
 
@@ -77,20 +81,7 @@ public class Crypto {
             state++;
         }
 
-        if(this.print) {
-            System.out.println("\n\n");
-
-            for (byte b : byteArray) {
-                System.out.println(b);
-            }
-        }
-
-        byte[] result = new byte[byteArray.size()];
-        for(int i = 0; i < byteArray.size(); i++) {
-            result[i] = byteArray.get(i);
-        }
-
-        return result;
+        return getBytes(byteArray);
     }
 
     public void setKey(String key) {
@@ -112,10 +103,10 @@ public class Crypto {
     }
 
     public static String genkey(){
-        return genkeyWithLengt(32);
+        return genkeyWithLength(32);
     }
 
-    public static String genkeyWithLengt(int length){
+    public static String genkeyWithLength(int length){
         byte[] array = new byte[length];
         new Random().nextBytes(array);
 
