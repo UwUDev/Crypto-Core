@@ -7,9 +7,14 @@ import java.util.ArrayList;
 public class Crypto {
 
     private String key;
+    private boolean print = false;
 
     public Crypto(String key) {
         this.key = key;
+    }
+    
+    public void printDebug(boolean b){
+        this.print = b;
     }
 
     public byte[] decrypt(byte[] message){
@@ -22,16 +27,19 @@ public class Crypto {
         for (byte b : message) {
             if(state >= keyBytes.length)
                 state = 0;
-            System.out.println(b);
+            if(this.print)
+                System.out.println(b);
             byte oof = (byte) (b - keyBytes[state]);
             byteArray.add(oof);
             state++;
         }
 
-        System.out.println("\n\n");
+        if(this.print) {
+            System.out.println("\n\n");
 
-        for (byte b : byteArray){
-            System.out.println(b);
+            for (byte b : byteArray) {
+                System.out.println(b);
+            }
         }
 
         byte[] result = new byte[byteArray.size()];
@@ -52,16 +60,19 @@ public class Crypto {
         for (byte b : bytes) {
             if(state >= keyBytes.length)
                 state = 0;
-            System.out.println(b);
+            if(this.print)
+                System.out.println(b);
             byte oof = (byte) (b + keyBytes[state]);
             byteArray.add(oof);
             state++;
         }
 
-        System.out.println("\n\n");
+        if(this.print) {
+            System.out.println("\n\n");
 
-        for (byte b : byteArray){
-            System.out.println(b);
+            for (byte b : byteArray) {
+                System.out.println(b);
+            }
         }
 
         byte[] result = new byte[byteArray.size()];
