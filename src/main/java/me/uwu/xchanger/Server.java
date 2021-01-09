@@ -31,7 +31,7 @@ public class Server {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
             int nRead;
-            byte[] data = new byte[69420]; //c'est drole hein
+            byte[] data = new byte[69420]; //c'est drole hein fdp
 
             while ((nRead = dataInputStream.read(data, 0, data.length)) != -1) {
                 buffer.write(data, 0, nRead);
@@ -45,6 +45,11 @@ public class Server {
 
             ss.close();
             socket.close();
+
+            if (Crypto.decodeUTF8(bytes).startsWith("New key is:")){
+                String[] newKey = Crypto.decodeUTF8(bytes).split(":");
+                crypto.setKey(newKey[1]);
+            }
 
             if (Crypto.decodeUTF8(crypto.decrypt(bytes)).equals("kill"))
                 break;
