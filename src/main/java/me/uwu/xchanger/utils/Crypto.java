@@ -9,10 +9,14 @@
 
 package me.uwu.xchanger.utils;
 
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Crypto {
 
@@ -111,5 +115,32 @@ public class Crypto {
         new Random().nextBytes(array);
 
         return new String(array, StandardCharsets.UTF_8);
+    }
+
+    public void saveKeyBytesToFile(File file) throws IOException {
+        if (file.createNewFile())
+            System.out.println("File created: " + file.getName());
+        else System.out.println("File already exists, this will erase old key...");
+
+
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+            out.write(this.key);
+            System.out.println("Successfully saved key bytes to " + file.getName());
+        } catch (IOException e) {
+            System.out.println("Unable to save key");
+            e.printStackTrace();
+        }
+    }
+
+    public void loadKeyBytesToFile(File file){
+        StringBuilder sb = new StringBuilder();
+        try {
+            List<String> list = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+            for (String line : list)
+                sb.append(line);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.key = sb.toString();
     }
 }
