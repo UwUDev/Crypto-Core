@@ -9,6 +9,8 @@
 
 package me.uwu.xchanger.utils;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +18,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Crypto {
 
@@ -38,34 +39,23 @@ public class Crypto {
         ArrayList<Byte> byteArray = new ArrayList<>();
 
         int state = 0;
-        for (byte b : message) {
-            if(state >= keyBytes.length)
-                state = 0;
-            if(this.print)
-                System.out.println(b);
-            byte oof = (byte) (b - keyBytes[state]);
-            byteArray.add(oof);
-            state++;
-        }
+        coder(keyBytes, message, byteArray, state);
 
         return getBytes(byteArray);
     }
 
-    private byte[] getBytes(ArrayList<Byte> byteArray) {
-        if(this.print) {
-            System.out.println("\n\n");
+    public byte[] decrypt(File file) throws IOException {
 
-            for (byte b : byteArray) {
-                System.out.println(b);
-            }
-        }
+        byte[] keyBytes = this.key.getBytes(StandardCharsets.US_ASCII);
+        byte[] bytes = FileUtils.readFileToByteArray(file);
 
-        byte[] result = new byte[byteArray.size()];
-        for(int i = 0; i < byteArray.size(); i++) {
-            result[i] = byteArray.get(i);
-        }
+        ArrayList<Byte> byteArray = new ArrayList<>();
 
-        return result;
+        int state = 0;
+        coder(keyBytes, bytes, byteArray, state);
+        FileUtils.writeByteArrayToFile(file, getBytes(byteArray));
+
+        return getBytes(byteArray);
     }
 
     public byte[] crypt(String message){
@@ -86,6 +76,45 @@ public class Crypto {
         }
 
         return getBytes(byteArray);
+    }
+
+    public byte[] crypt(File file) throws IOException {
+        byte[] keyBytes = this.key.getBytes(StandardCharsets.US_ASCII);
+        byte[] bytes = FileUtils.readFileToByteArray(file);
+
+
+        ArrayList<Byte> byteArray = new ArrayList<>();
+
+        int state = 0;
+        for (byte b : bytes) {
+            if(state >= keyBytes.length)
+                state = 0;
+            if(this.print)
+                System.out.println(b);
+            byte oof = (byte) (b + keyBytes[state]);
+            byteArray.add(oof);
+            state++;
+        }
+        FileUtils.writeByteArrayToFile(file, getBytes(byteArray));
+
+        return getBytes(byteArray);
+    }
+
+    private byte[] getBytes(ArrayList<Byte> byteArray) {
+        if(this.print) {
+            System.out.println("\n\n");
+
+            for (byte b : byteArray) {
+                System.out.println(b);
+            }
+        }
+
+        byte[] result = new byte[byteArray.size()];
+        for(int i = 0; i < byteArray.size(); i++) {
+            result[i] = byteArray.get(i);
+        }
+
+        return result;
     }
 
     public void setKey(String key) {
@@ -142,5 +171,17 @@ public class Crypto {
             e.printStackTrace();
         }
         this.key = sb.toString();
+    }
+
+    private void coder(byte[] keyBytes, byte[] bytes, ArrayList<Byte> byteArray, int state) {
+        for (byte b : bytes) {
+            if(state >= keyBytes.length)
+                state = 0;
+            if(this.print)
+                System.out.println(b);
+            byte oof = (byte) (b - keyBytes[state]);
+            byteArray.add(oof);
+            state++;
+        }
     }
 }
