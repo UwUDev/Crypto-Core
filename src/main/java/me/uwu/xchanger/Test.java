@@ -23,6 +23,6 @@ public class Test {
 
         FileUtils.copyFile(image, new File(image.getAbsolutePath().replace(".png", ".crypto")));
 
-        crypto2.decrypt(image);
+        crypto2.decrypt(image); // also returns byte array
     }
 }

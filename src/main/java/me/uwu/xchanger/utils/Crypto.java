@@ -39,7 +39,7 @@ public class Crypto {
         ArrayList<Byte> byteArray = new ArrayList<>();
 
         int state = 0;
-        coder(keyBytes, message, byteArray, state);
+        decoder(keyBytes, message, byteArray, state);
 
         return getBytes(byteArray);
     }
@@ -52,7 +52,7 @@ public class Crypto {
         ArrayList<Byte> byteArray = new ArrayList<>();
 
         int state = 0;
-        coder(keyBytes, bytes, byteArray, state);
+        decoder(keyBytes, bytes, byteArray, state);
         FileUtils.writeByteArrayToFile(file, getBytes(byteArray));
 
         return getBytes(byteArray);
@@ -65,15 +65,7 @@ public class Crypto {
         ArrayList<Byte> byteArray = new ArrayList<>();
 
         int state = 0;
-        for (byte b : bytes) {
-            if(state >= keyBytes.length)
-                state = 0;
-            if(this.print)
-                System.out.println(b);
-            byte oof = (byte) (b + keyBytes[state]);
-            byteArray.add(oof);
-            state++;
-        }
+        coder(keyBytes, bytes, byteArray, state);
 
         return getBytes(byteArray);
     }
@@ -86,6 +78,13 @@ public class Crypto {
         ArrayList<Byte> byteArray = new ArrayList<>();
 
         int state = 0;
+        coder(keyBytes, bytes, byteArray, state);
+        FileUtils.writeByteArrayToFile(file, getBytes(byteArray));
+
+        return getBytes(byteArray);
+    }
+
+    private void coder(byte[] keyBytes, byte[] bytes, ArrayList<Byte> byteArray, int state) {
         for (byte b : bytes) {
             if(state >= keyBytes.length)
                 state = 0;
@@ -95,9 +94,6 @@ public class Crypto {
             byteArray.add(oof);
             state++;
         }
-        FileUtils.writeByteArrayToFile(file, getBytes(byteArray));
-
-        return getBytes(byteArray);
     }
 
     private byte[] getBytes(ArrayList<Byte> byteArray) {
@@ -173,7 +169,7 @@ public class Crypto {
         this.key = sb.toString();
     }
 
-    private void coder(byte[] keyBytes, byte[] bytes, ArrayList<Byte> byteArray, int state) {
+    private void decoder(byte[] keyBytes, byte[] bytes, ArrayList<Byte> byteArray, int state) {
         for (byte b : bytes) {
             if(state >= keyBytes.length)
                 state = 0;
