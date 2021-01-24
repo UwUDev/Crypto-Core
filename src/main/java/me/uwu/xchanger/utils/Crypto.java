@@ -84,18 +84,6 @@ public class Crypto {
         return getBytes(byteArray);
     }
 
-    private void coder(byte[] keyBytes, byte[] bytes, ArrayList<Byte> byteArray, int state) {
-        for (byte b : bytes) {
-            if(state >= keyBytes.length)
-                state = 0;
-            if(this.print)
-                System.out.println(b);
-            byte oof = (byte) (b + keyBytes[state]);
-            byteArray.add(oof);
-            state++;
-        }
-    }
-
     private byte[] getBytes(ArrayList<Byte> byteArray) {
         if(this.print) {
             System.out.println("\n\n");
@@ -157,16 +145,28 @@ public class Crypto {
         }
     }
 
+    public void saveKeyBytesToFileWithPwd(File file, String pwd) throws IOException {
+        Crypto c = new Crypto(pwd);
+        saveKeyBytesToFile(file);
+        c.crypt(file);
+    }
+
     public void loadKeyBytesToFile(File file){
         StringBuilder sb = new StringBuilder();
         try {
             List<String> list = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
-            for (String line : list)
-                sb.append(line);
+                for (String line : list)
+                    sb.append(line);
+                this.key = sb.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.key = sb.toString();
+    }
+
+    public void loadKeyBytesToFileWithPwd(File file, String pwd) throws IOException {
+        Crypto c = new Crypto(pwd);
+        c.decrypt(file);
+        loadKeyBytesToFile(file);
     }
 
     private void decoder(byte[] keyBytes, byte[] bytes, ArrayList<Byte> byteArray, int state) {
@@ -176,6 +176,18 @@ public class Crypto {
             if(this.print)
                 System.out.println(b);
             byte oof = (byte) (b - keyBytes[state]);
+            byteArray.add(oof);
+            state++;
+        }
+    }
+
+    private void coder(byte[] keyBytes, byte[] bytes, ArrayList<Byte> byteArray, int state) {
+        for (byte b : bytes) {
+            if(state >= keyBytes.length)
+                state = 0;
+            if(this.print)
+                System.out.println(b);
+            byte oof = (byte) (b + keyBytes[state]);
             byteArray.add(oof);
             state++;
         }
