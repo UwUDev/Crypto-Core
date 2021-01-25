@@ -24,7 +24,7 @@ public class Crypto {
     private String baseKey;
     private boolean print = false;
 
-    private final String seedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private final String seedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*-+/;,?.§<>{}=£µùéè\\@çç^¨º¹²³[]|`~¡°¿¶¢¥©®±";
 
     public Crypto(String key) {
         this.key = key;
@@ -200,6 +200,10 @@ public class Crypto {
     }
 
     public String seedKey(int length){
+        return seedKeyWithCustomChars(length, seedChars);
+    }
+
+    public String seedKeyWithCustomChars(int length, String chars){
         long seed = 0;
         for (byte b : this.getKeyBytes())
             seed += b;
@@ -207,13 +211,13 @@ public class Crypto {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 1; i<= this.getKeyBytes().length * length; i++)
-            sb.append(seedChars.charAt(random.nextInt(seedChars.length())));
+            sb.append(chars.charAt(random.nextInt(chars.length())));
         this.key = sb.toString();
         System.out.println("Key has been seed: " + this.key);
         return sb.toString();
     }
 
-    public void unSeedKey(){
+    public void unseedKey(){
         this.key = this.baseKey;
     }
 }

@@ -1,22 +1,21 @@
 package me.uwu.xchanger;
 
-import me.uwu.xchanger.utils.Crypto;//webhook test
+import me.uwu.xchanger.utils.Crypto;
 
-import java.io.File;
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         //String key = Crypto.genkey();
-        String key = Crypto.genKeyWithLength(50);
+        String key = Crypto.genKeyWithLength(250);
         System.out.println("Key: " + key);
 
         /*Crypto crypto = new Crypto("ﮄﮫﭽꜺḖᴙ۞ՖҢӪїῦ̤ȾǱ×ݭࢭἳὬἄ﷽ﭿﻦԫ֏Ҏз");
         Crypto crypto2 = new Crypto("ﮄﮫﭽꜺḖᴙ۞ՖҢӪїῦ̤ȾǱ×ݭࢭἳὬἄ﷽ﭿﻦԫ֏Ҏз");*/
         Crypto crypto = new Crypto(key);
-        crypto.saveKeyBytesToFileWithPwd(new File("key.key"), "pute");
-        Crypto crypto2 = new Crypto(null);
-        crypto2.loadKeyBytesToFileWithPwd(new File("key.key"), "pute");
+        //crypto.saveKeyBytesToFile(new File("key.key"));
+        Crypto crypto2 = new Crypto(key);
+        //crypto2.loadKeyBytesToFile(new File("key.key"));
         System.out.println("Loaded key is: " + crypto2.getKey());
         crypto.seedKey(30);
         crypto2.seedKey(30);
@@ -29,5 +28,8 @@ public class Main {
 
         System.out.println("\n\nEncrypted result: " + Crypto.decodeUTF8(encoded)); // malicious person that convert to utf8 intercepted packet to see content
         System.out.println("Decrypted result: " + Crypto.decodeUTF8(crypto2.decrypt(encoded))); // client number 2 convert to utf8 after decrypting with the key
+
+        crypto.unseedKey();
+        crypto.seedKeyWithCustomChars(3, "abcABC123@#!?");
     }
 }
