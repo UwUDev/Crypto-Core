@@ -125,17 +125,6 @@ public class Crypto {
         return string.getBytes(StandardCharsets.UTF_8);
     }
 
-    public static String genkey(){
-        return genKeyWithLength(32);
-    }
-
-    public static String genKeyWithLength(int length){
-        byte[] array = new byte[length];
-        new Random().nextBytes(array);
-
-        return new String(array, StandardCharsets.UTF_8);
-    }
-
     public void saveKeyBytesToFile(File file) throws IOException {
         if (file.createNewFile())
             System.out.println("File created: " + file.getName());

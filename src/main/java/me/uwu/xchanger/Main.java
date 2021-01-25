@@ -1,6 +1,7 @@
 package me.uwu.xchanger;
 
 import me.uwu.xchanger.utils.Crypto;
+import me.uwu.xchanger.utils.Password;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +9,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         //String key = Crypto.genkey();
-        String key = Crypto.genKeyWithLength(150);
+        String key = Password.genKeyWithLength(150);
         System.out.println("Key: " + key);
 
         /*Crypto crypto = new Crypto("ﮄﮫﭽꜺḖᴙ۞ՖҢӪїῦ̤ȾǱ×ݭࢭἳὬἄ﷽ﭿﻦԫ֏Ҏз");

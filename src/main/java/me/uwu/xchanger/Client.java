@@ -1,6 +1,7 @@
 package me.uwu.xchanger;
 
 import me.uwu.xchanger.utils.Crypto;
+import me.uwu.xchanger.utils.Password;
 
 import java.io.*;
 import java.net.Socket;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 public class Client {
     public static void main(String[] args) throws IOException {
         //Crypto crypto = new Crypto("ﮄﮫﭽꜺḖᴙ۞ՖҢӪїῦ̤ȾǱ×ݭࢭἳὬἄ﷽ﭿﻦԫ֏Ҏз");
-        Crypto crypto = new Crypto(Crypto.genkey());
+        Crypto crypto = new Crypto(Password.genKey());
         System.out.print("enter host ip: ");
         Scanner in = new Scanner(System.in);
         String host = in.nextLine();
