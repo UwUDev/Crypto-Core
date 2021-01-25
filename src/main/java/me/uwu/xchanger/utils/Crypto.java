@@ -12,7 +12,6 @@ package me.uwu.xchanger.utils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -22,14 +21,22 @@ import java.util.Random;
 public class Crypto {
 
     private String key;
+    private String baseKey;
     private boolean print = false;
+
+    private final String seedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public Crypto(String key) {
         this.key = key;
+        this.baseKey = key;
     }
     
     public void printDebug(boolean b){
         this.print = b;
+    }
+
+    public byte[] getKeyBytes(){
+        return this.key.getBytes(StandardCharsets.US_ASCII);
     }
 
     public byte[] decrypt(byte[] message){
@@ -103,27 +110,26 @@ public class Crypto {
 
     public void setKey(String key) {
         this.key = key;
+        this.baseKey = key;
     }
 
     public String getKey() {
         return key;
     }
 
-    private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
-
     public static String decodeUTF8(byte[] bytes) {
-        return new String(bytes, UTF8_CHARSET);
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     public static byte[] encodeUTF8(String string) {
-        return string.getBytes(UTF8_CHARSET);
+        return string.getBytes(StandardCharsets.UTF_8);
     }
 
     public static String genkey(){
-        return genkeyWithLength(32);
+        return genKeyWithLength(32);
     }
 
-    public static String genkeyWithLength(int length){
+    public static String genKeyWithLength(int length){
         byte[] array = new byte[length];
         new Random().nextBytes(array);
 
@@ -191,5 +197,23 @@ public class Crypto {
             byteArray.add(oof);
             state++;
         }
+    }
+
+    public String seedKey(int length){
+        long seed = 0;
+        for (byte b : this.getKeyBytes())
+            seed += b;
+        Random random = new Random(seed);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i<= this.getKeyBytes().length * length; i++)
+            sb.append(seedChars.charAt(random.nextInt(seedChars.length())));
+        this.key = sb.toString();
+        System.out.println("Key has been seed: " + this.key);
+        return sb.toString();
+    }
+
+    public void unSeedKey(){
+        this.key = this.baseKey;
     }
 }
