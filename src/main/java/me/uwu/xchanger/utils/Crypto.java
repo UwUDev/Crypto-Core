@@ -143,7 +143,10 @@ public class Crypto {
 
 
         try (Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
-            out.write(this.key);
+            StringBuilder sb = new StringBuilder();
+            for (byte b : key.getBytes())
+                sb.append("" + b + ",");
+            out.write(sb.substring(0, sb.length()-1));
             System.out.println("Successfully saved key bytes to " + file.getName());
         } catch (IOException e) {
             System.out.println("Unable to save key");
@@ -161,9 +164,14 @@ public class Crypto {
         StringBuilder sb = new StringBuilder();
         try {
             List<String> list = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
-                for (String line : list)
-                    sb.append(line);
-                this.key = sb.toString();
+            for (String line : list)
+                sb.append(line);
+            String[] strBytes = sb.toString().split(",");
+            byte[] bytes = new byte[strBytes.length];
+            for (int i = 0; i < strBytes.length; i++) {
+                bytes[i] = Byte.parseByte(strBytes[i]);
+            }
+            this.key = decodeUTF8(bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -173,6 +181,7 @@ public class Crypto {
         Crypto c = new Crypto(pwd);
         c.decrypt(file);
         loadKeyBytesToFile(file);
+        c.crypt(file);
     }
 
     private void decoder(byte[] keyBytes, byte[] bytes, ArrayList<Byte> byteArray, int state) {

@@ -2,20 +2,21 @@ package me.uwu.xchanger;
 
 import me.uwu.xchanger.utils.Crypto;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         //String key = Crypto.genkey();
-        String key = Crypto.genKeyWithLength(250);
+        String key = Crypto.genKeyWithLength(150);
         System.out.println("Key: " + key);
 
         /*Crypto crypto = new Crypto("ﮄﮫﭽꜺḖᴙ۞ՖҢӪїῦ̤ȾǱ×ݭࢭἳὬἄ﷽ﭿﻦԫ֏Ҏз");
         Crypto crypto2 = new Crypto("ﮄﮫﭽꜺḖᴙ۞ՖҢӪїῦ̤ȾǱ×ݭࢭἳὬἄ﷽ﭿﻦԫ֏Ҏз");*/
         Crypto crypto = new Crypto(key);
-        //crypto.saveKeyBytesToFile(new File("key.key"));
-        Crypto crypto2 = new Crypto(key);
-        //crypto2.loadKeyBytesToFile(new File("key.key"));
+        crypto.saveKeyBytesToFileWithPwd(new File("key.key"), "P4ssw@rd");
+        Crypto crypto2 = new Crypto(null);
+        crypto2.loadKeyBytesToFileWithPwd(new File("key.key"), "P4ssw@rd");
         System.out.println("Loaded key is: " + crypto2.getKey());
         crypto.seedKey(30);
         crypto2.seedKey(30);
